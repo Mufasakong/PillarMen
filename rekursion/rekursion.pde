@@ -34,9 +34,14 @@ if(plads<x.length-1){
 }
 
 int findMax(float[] list, float maxV, float pointer) {
+  
+  if (pointer > list.length-2) {
+    return int(maxV);
+  }
+  
   if (list[int(pointer + 1)] > list[int(maxV)]){
     return findMax(list, pointer+1, pointer+1);
   }  else {
-    return findMax(list, maxV, pointer+1);
+    return findMax(list, pointer+1, maxV);
     }
 }
