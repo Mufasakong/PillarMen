@@ -1,47 +1,63 @@
-float[] x = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-float[] randomList = {floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length))), floor((random(x.length)))};
 
-float plads = 0;
-float pointer = 0;
+int[] tal = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+int pointer = 0;
+int place = 0;
 
-void setup(){
-size(500,500);
-background(179, 230, 255);
+IntList list;
 
+public void setup() {
+  size(400, 400);
+  list = new IntList();  
+  list.append(tal);
+  list.shuffle(this);
 }
 
-void draw(){
-display(randomList, plads);
-//println(randomList.length);
-println(randomList);
-}
-
-void mousePressed(){
-  int storstIndex = findMax(randomList, plads, pointer);
-  randomList = display(randomList, storstIndex);
+public void draw() {
+  clear();
+  background(179, 230, 255);
+  display(list, 0);
+  textSize(50);
+  text("Pointer = "+ pointer, 50, 50);
   
-  pointer = pointer +1;
+  //println(inventory);
+  println(pointer);
+  //println(findMax(list, pointer, plads));
 }
 
-float[] display(float[] list, float plads){
-float value = list[int(plads)];
-noStroke();
-rect(50+40*plads,height,30,-20*value);
-if(plads<x.length-1){
-  display(list, plads+1);
+public void display(IntList lists, int place) {
+  int value = lists.get(place);
+
+  rect(40*place, height, 30, -20*value);
+  //text();
+  if (place<lists.size()-1) {
+    display(lists, place+1);
   }
-  return list;
 }
 
-int findMax(float[] list, float maxV, float pointer) {
-  
-  if (pointer > list.length-2) {
-    return int(maxV);
+int findMax(IntList lists, int pointer, int indexMax) {
+  if (pointer > lists.size()-2) {
+    return int(indexMax);
   }
-  
-  if (list[int(pointer + 1)] > list[int(maxV)]){
-    return findMax(list, pointer+1, pointer+1);
-  }  else {
-    return findMax(list, pointer+1, maxV);
+  if (lists.get(pointer+1) > lists.get(indexMax)) {
+    return findMax(lists, pointer+1, pointer+1);
+  } else {
+    return findMax(lists, pointer+1, indexMax);
+  }
+}
+
+void swap(IntList lists, int pointer, int indexMax) {
+  int value1 = lists.get(pointer);
+  int value2 = lists.get(indexMax);
+  lists.set(lists.get(pointer), value2); 
+  lists.set(lists.get(indexMax), value1); 
+}
+
+  public void mouseClicked() {
+  swap(list, pointer, findMax(list, pointer, 1));
+  if (pointer <= 11) {
+    pointer++;
+    if (pointer == 11) {
+    pointer=0;
     }
+  } 
 }
