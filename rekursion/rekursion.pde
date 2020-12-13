@@ -1,32 +1,37 @@
 int[] tal = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-int index = 0;
-int antalTryk = 0;
-
 IntList list = new IntList();
-int[] talListe;
+int index = 0;
 
 public void setup() {
   size(400, 400);
-  frameRate(10);
   list.append(tal);
-  list.shuffle(this);
-  talListe = list.array();
+  list.shuffle();
+  tal = list.array();
 }
 
 public void draw() {
   clear();
   background(179, 230, 255);
-  display(0, talListe);
+  display(0, tal);
+  println(index);
+  
+  if (index == 10) {
+  fill(200, 20, 20);
+  text("Søjlerne er sorteret \n højreklik for at shuffle dem igen", width/2, height/2-100);
+  }
 }
 
-public void mouseClicked() {
-  if (antalTryk <= 9){
-  int max = findMax(talListe, index, index);
-  swap(talListe, index, max);
+public void mouseReleased() {
+  if (index <= 9){
+  int max = findMax(tal, index, index);
+  swap(tal, index, max);
   index++;
-  antalTryk++;
-  } else {
-  println("Du har opbrugt dine tryk");
+  } 
+  
+  if (mouseButton == RIGHT) {
+  index = 0;
+  list.shuffle();
+  tal = list.array();
   }
 }
 
@@ -40,25 +45,28 @@ public void display(int place, int[] list) {
   fill(0);
   textSize(25);
   textAlign(CENTER);
-  text(talListe[place], 40*place+30/2, height+talListe[place]*-20);
+  text(list[place], 40*place+30/2, height+list[place]*-20);
   
-  if (place < talListe.length-1) {
+  if (place < list.length-1) {
     display(++place, list);
   }
 }
 
-int findMax(int[] list, int pointer, int maxV) {
+public int findMax(int[] list, int pointer, int maxV) {
   if (pointer > list.length-2) {
     return maxV;
   }
-  if (talListe[pointer+1]>talListe[maxV]) {
+  
+  if (list[pointer+1]>list[maxV]) {
     return findMax(list, pointer+1, pointer+1);
-  } else {
+  } 
+  
+  else {
     return findMax(list, pointer+1, maxV);
   }
 }
 
-void swap(int[] list, int pointerA, int pointerB) {
+public void swap(int[] list, int pointerA, int pointerB) {
   int valueA = list[pointerA];
   int valueB = list[pointerB];
   list[pointerA] = valueB;
