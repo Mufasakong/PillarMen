@@ -53,7 +53,7 @@ void swap(IntList lists, int pointer, int indexMax) {
 }
 
   public void mouseClicked() {
-  swap(list, pointer, findMax(list, pointer, 1));
+  swap(list, pointer, findMax(list, pointer, 0));
   if (pointer <= 11) {
     pointer++;
     if (pointer == 11) {
